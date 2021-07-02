@@ -81,7 +81,7 @@ impl Application for App {
                 num_salty_lips_str: String::new(),
 
                 suvivors_alive_input_state: iced::text_input::State::new(),
-                num_alive_survivors_str: String::new(),
+                num_alive_survivors_str: String::from("4"),
             },
             Command::none(),
         )
