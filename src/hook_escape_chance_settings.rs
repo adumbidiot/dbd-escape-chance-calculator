@@ -22,6 +22,9 @@ pub struct HookEscapeChanceSettings {
 
     /// The # of salty lips
     pub num_salty_lips: u8,
+
+    /// The # of alive survivors
+    pub num_alive_survivors: u8,
 }
 
 impl HookEscapeChanceSettings {
@@ -32,6 +35,8 @@ impl HookEscapeChanceSettings {
             up_the_ante: [None; 4],
 
             num_salty_lips: 0,
+
+            num_alive_survivors: 4,
         }
     }
 
@@ -50,13 +55,13 @@ impl HookEscapeChanceSettings {
 
         for tier in self.up_the_ante.iter().flatten() {
             escape_chance += match tier {
-                Tier::I => 0.03,
-                Tier::II => 0.06,
-                Tier::III => 0.09,
+                Tier::I => 0.01 * f64::from(num::clamp(self.num_alive_survivors, 1, 4) - 1),
+                Tier::II => 0.02 * f64::from(num::clamp(self.num_alive_survivors, 1, 4) - 1),
+                Tier::III => 0.03 * f64::from(num::clamp(self.num_alive_survivors, 1, 4) - 1),
             };
         }
 
-        escape_chance += 0.03 * f64::from(self.num_salty_lips).min(4.0);
+        escape_chance += 0.03 * f64::from(num::clamp(self.num_salty_lips, 0, 4));
 
         // Begin binomial calculation
         {

@@ -28,6 +28,7 @@ pub enum Message {
     DecreaseUpTheAnte(u8),
 
     NumSaltyLipsChange(String),
+    NumAliveSurvivorsChange(String),
 }
 
 pub struct App {
@@ -47,6 +48,9 @@ pub struct App {
 
     salty_lips_input_state: iced::text_input::State,
     num_salty_lips_str: String,
+
+    suvivors_alive_input_state: iced::text_input::State,
+    num_alive_survivors_str: String,
 }
 
 impl Application for App {
@@ -75,6 +79,9 @@ impl Application for App {
 
                 salty_lips_input_state: iced::text_input::State::new(),
                 num_salty_lips_str: String::new(),
+
+                suvivors_alive_input_state: iced::text_input::State::new(),
+                num_alive_survivors_str: String::from("4"),
             },
             Command::none(),
         )
@@ -117,6 +124,19 @@ impl Application for App {
 
                 Command::none()
             }
+            Message::NumAliveSurvivorsChange(text) => {
+                if text.is_empty() {
+                    self.num_alive_survivors_str.clear();
+                    self.escape_chance_settings.num_alive_survivors = 1;
+                } else if let Ok(parsed) = text.parse::<u8>() {
+                    if (1..5).contains(&parsed) {
+                        self.num_alive_survivors_str = text;
+                        self.escape_chance_settings.num_alive_survivors = parsed;
+                    }
+                }
+
+                Command::none()
+            }
         }
     }
 
@@ -149,11 +169,6 @@ impl Application for App {
             .push(Text::new("Dead by Daylight").size(40))
             .push(Text::new("Hook Escape Calculator").size(30))
             .push(Space::new(Length::Shrink, Length::Units(10)))
-            .push(Text::new(format!(
-                "Total Escape Chance: {}%",
-                self.escape_chance_settings.calculate() * 100.0_f64
-            )))
-            .push(Space::new(Length::Shrink, Length::Units(40)))
             .push(slippery_meat_column)
             .push(up_the_ante_row_1)
             .push(
@@ -208,21 +223,43 @@ impl Application for App {
                         .padding(10),
                     ),
             )
+            .push(
+                Column::new()
+                    .push(Text::new("Number of Alive Survivors").size(20))
+                    .push(
+                        TextInput::new(
+                            &mut self.suvivors_alive_input_state,
+                            "# of alive survivors",
+                            &self.num_alive_survivors_str,
+                            Message::NumAliveSurvivorsChange,
+                        )
+                        .padding(10),
+                    ),
+            )
             .align_items(Align::Center)
             .width(Length::Fill)
             .spacing(20);
 
         Container::new(
-            Scrollable::new(&mut self.scrollable_state)
-                .push(Container::new(body).width(Length::Fill))
-                .padding(20)
-                .width(Length::Fill),
+            Column::new()
+                .push(
+                    Scrollable::new(&mut self.scrollable_state)
+                        .push(body)
+                        .padding(20)
+                        .width(Length::Fill)
+                        .height(Length::Fill),
+                )
+                .push(
+                    Container::new(Text::new(format!(
+                        "Total Escape Chance: {}%",
+                        self.escape_chance_settings.calculate() * 100.0_f64
+                    )))
+                    .padding(20)
+                    .style(ContainerForegroundStyle)
+                    .width(Length::Fill),
+                ),
         )
-        .width(Length::Fill)
-        .height(Length::Fill)
         .style(ContainerBackgroundStyle)
-        .center_x()
-        .center_y()
         .into()
     }
 }
@@ -241,7 +278,19 @@ pub struct ContainerBackgroundStyle;
 impl iced::container::StyleSheet for ContainerBackgroundStyle {
     fn style(&self) -> iced::container::Style {
         iced::container::Style {
-            background: iced::Color::from_rgb8(0x31, 0x36, 0x38).into(), // 0x3F, 0x3F, 0x3F
+            background: iced::Color::BLACK.into(), // 0x3F, 0x3F, 0x3F
+            text_color: iced::Color::WHITE.into(), // iced::Color::from_rgb8(0xFF, 0x00, 0x00).into(),
+            ..iced::container::Style::default()
+        }
+    }
+}
+
+pub struct ContainerForegroundStyle;
+
+impl iced::container::StyleSheet for ContainerForegroundStyle {
+    fn style(&self) -> iced::container::Style {
+        iced::container::Style {
+            background: iced::Color::from_rgb8(0x31, 0x36, 0x38).into(),
             text_color: iced::Color::WHITE.into(), // iced::Color::from_rgb8(0xFF, 0x00, 0x00).into(),
             ..iced::container::Style::default()
         }
