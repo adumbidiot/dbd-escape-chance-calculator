@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["dbd_escape_chance_calculator"];

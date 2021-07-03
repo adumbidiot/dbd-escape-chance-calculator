@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["dbd_escape_chance_calculator"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html\" title=\"trait core::hash::Hash\">Hash</a> for <a class=\"enum\" href=\"dbd_escape_chance_calculator/hook_escape_chance_settings/enum.Tier.html\" title=\"enum dbd_escape_chance_calculator::hook_escape_chance_settings::Tier\">Tier</a>","synthetic":false,"types":["dbd_escape_chance_calculator::hook_escape_chance_settings::Tier"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

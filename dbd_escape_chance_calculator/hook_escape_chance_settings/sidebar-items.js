@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["BASE_ESCAPE_CHANCE",""],["BASE_NUM_TRIES",""]],"enum":[["Tier",""]],"struct":[["HookEscapeChanceSettings",""]]});
