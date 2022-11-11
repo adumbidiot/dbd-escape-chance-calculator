@@ -507,7 +507,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "iced",
- "image",
+ "image 0.24.5",
  "num",
 ]
 
@@ -1285,7 +1285,7 @@ dependencies = [
  "guillotiere",
  "iced_graphics",
  "iced_native",
- "image",
+ "image 0.23.14",
  "log",
  "raw-window-handle",
  "wgpu",
@@ -1339,6 +1339,20 @@ dependencies = [
  "num-rational 0.3.2",
  "num-traits",
  "png",
+]
+
+[[package]]
+name = "image"
+version = "0.24.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "69b7ea949b537b0fd0af141fff8c77690f2ce96f4f41f042ccb6c69c6c965945"
+dependencies = [
+ "bytemuck",
+ "byteorder",
+ "color_quant",
+ "gif",
+ "num-rational 0.4.0",
+ "num-traits",
 ]
 
 [[package]]
